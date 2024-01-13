@@ -32,9 +32,13 @@ app.post("/create/user", async (req, res) => {
 
 app.put("/add/preferences", async (req, res) => {
   try {
-      const emailId = req.body.email;
+      const { email, preference } = req.body;
 
-      const userRef = db.collection('users').doc(emailId);
+      if (!email || !preference) {
+          return res.status(400).json({ error: "Invalid request body. Email and preference are required." });
+      }
+
+      const userRef = db.collection('users').doc(email);
       const userData = await userRef.get();
 
       if (!userData.exists) {
@@ -43,20 +47,16 @@ app.put("/add/preferences", async (req, res) => {
 
       const existingPreferences = userData.data().preference || [];
 
-      const newPreference = req.body.preference;
-
-      const updatedPreferences = Array.isArray(existingPreferences) ? existingPreferences : [];
-
-      updatedPreferences.push(newPreference);
+      const updatedPreferences = req.body.preference;
 
       await userRef.update({
           preference: updatedPreferences
       });
 
-      const response = { message: "Added successfully." };
+      const response = { message: "Preference added successfully." };
       return res.status(200).json(response);
   } catch (error) {
-      return res.status(500).json({ error: error.toString() });
+      return res.status(500).json({ error: error.message || "Internal server error" });
   }
 });
 
