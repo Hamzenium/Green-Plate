@@ -9,6 +9,8 @@ admin.initializeApp({
 app.use(express.json());
 
 const db = admin.firestore();
+
+
 app.post("/create/user", async (req, res) => {
   try {
     const email = req.body.email;
@@ -74,20 +76,35 @@ app.put("/add/items", async (req, res) => {
 
       const newItem = req.body.items;
 
-      // Ensure existing items is an array
       const updatedItems = Array.isArray(existingItems) ? existingItems : [];
 
-      // Append the new item to the existing items array
       updatedItems.push(newItem);
 
       await userRef.update({
-          items: updatedItems // Change 'preference' to 'items'
+          items: updatedItems 
       });
-
       const response = { message: "Added successfully." };
       return res.status(200).json(response);
   } catch (error) {
       return res.status(500).json({ error: error.toString() });
+  }
+});
+
+app.get('/dashboard', async (req, res) => {
+  const userId = req.body.email;
+
+  try {
+      const userRef = db.collection('users');
+      const userDoc = await userRef.doc(userId).get();
+
+      if (userDoc.exists) {
+          const userData = userDoc.data();
+          res.send(userData);
+      } else {
+          res.status(404).send("User not found");
+      }
+  } catch (error) {
+      res.status(500).send(error);
   }
 });
 
