@@ -47,7 +47,7 @@ app.put("/add/preferences", async (req, res) => {
 
       const existingPreferences = userData.data().preference || [];
 
-      const updatedPreferences = req.body.preference;
+      const updatedPreferences = req.body.pr;
 
       await userRef.update({
           preference: updatedPreferences
@@ -147,6 +147,6 @@ app.delete('/deleteItem', async (req, res) => {
 });
 
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+app.listen(process.env.PORT || 3100, () => {
+	console.log('http://localhost:3100/')
+})
