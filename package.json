@@ -1,0 +1,19 @@
+{
+  "name": "green-plate",
+  "version": "1.0.0",
+  "description": "code repository for deltahacks x project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tsuyuuu/green-plate.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tsuyuuu/green-plate/issues"
+  },
+  "homepage": "https://github.com/tsuyuuu/green-plate#readme"
+}
