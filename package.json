@@ -2,12 +2,12 @@
   "name": "green-plate",
   "version": "1.0.0",
   "description": "code repository for deltahacks x project",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
+    "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
-    "start": "nodemon index.js",
     "type": "git",
     "url": "git+https://github.com/tsuyuuu/green-plate.git"
   },
