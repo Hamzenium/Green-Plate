@@ -59,6 +59,39 @@ app.put("/add/preferences", async (req, res) => {
 });
 
 
+app.put("/add/items", async (req, res) => {
+  try {
+      const emailId = req.body.email;
+
+      const userRef = db.collection('users').doc(emailId);
+      const userData = await userRef.get();
+
+      if (!userData.exists) {
+          return res.status(404).json({ error: "User not found" });
+      }
+
+      const existingItems = userData.data().items || [];
+
+      const newItem = req.body.items;
+
+      // Ensure existing items is an array
+      const updatedItems = Array.isArray(existingItems) ? existingItems : [];
+
+      // Append the new item to the existing items array
+      updatedItems.push(newItem);
+
+      await userRef.update({
+          items: updatedItems // Change 'preference' to 'items'
+      });
+
+      const response = { message: "Added successfully." };
+      return res.status(200).json(response);
+  } catch (error) {
+      return res.status(500).json({ error: error.toString() });
+  }
+});
+
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
