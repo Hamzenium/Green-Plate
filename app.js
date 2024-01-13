@@ -108,6 +108,44 @@ app.get('/dashboard', async (req, res) => {
   }
 });
 
+app.delete('/deleteItem', async (req, res) => {
+  const userId = req.body.email;
+  const itemIndex = req.body.itemIndex;
+
+  try {
+      const userRef = db.collection('users').doc(userId);
+
+      const userDoc = await userRef.get();
+
+      if (!userDoc.exists) {
+          res.status(404).send("User not found");
+          return;
+      }
+
+      const userData = userDoc.data();
+
+      if (!userData.items || !Array.isArray(userData.items)) {
+          res.status(400).send("Invalid user data structure");
+          return;
+      }
+
+      if (itemIndex < 0 || itemIndex >= userData.items.length) {
+          res.status(400).send("Invalid item index");
+          return;
+      }
+
+      userData.items.splice(itemIndex, 1);
+
+      await userRef.update({
+          items: userData.items
+      });
+
+      res.send("Item deleted successfully");
+  } catch (error) {
+      res.status(500).send(error);
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
