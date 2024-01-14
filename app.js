@@ -150,7 +150,7 @@ app.delete('/deleteItem', async (req, res) => {
     }
 });
 
-api_key = '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'
+const api_key = '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'
 const openai = new OpenAI(api_key);
 
 app.post('/upload', async (req, res) => {
