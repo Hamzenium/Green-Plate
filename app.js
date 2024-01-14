@@ -104,7 +104,7 @@ app.put("/add/items", async (req, res) => {
     }
 });
 
-app.get('/dashboard', async (req, res) => {
+app.post('/dashboard', async (req, res) => {
     const userId = req.body.email;
 
     try {
