@@ -166,7 +166,7 @@ const openai = new OpenAI({
 });
 
 
-app.get('/create/recipe', async (req, res) => {
+app.post('/create/recipe', async (req, res) => {
     const userId = req.body.email;
 
     try {
@@ -212,7 +212,7 @@ app.get('/create/recipe', async (req, res) => {
         res.status(500).json({ error: 'Internal request failed' });
     }
 });
-app.get('/create/recipe/steps', async (req, res) => {
+app.post('/create/recipe/steps', async (req, res) => {
     const userId = req.body.email;
 
     try {
