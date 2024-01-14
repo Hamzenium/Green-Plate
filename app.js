@@ -10,6 +10,7 @@ admin.initializeApp({
     credential: admin.credential.cert(credentials)
 });
 
+app.use(express.json());
 app.use(fileUpload());
 app.use(cors());
 
