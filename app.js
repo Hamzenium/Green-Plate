@@ -193,7 +193,14 @@ app.post('/create/recipe', async (req, res) => {
                     preference_word += ", " + userData.preference[i];
                 }
             }
-            const prompt = `Based on your what sort of food I want to eat (${preference_word}) and available items in the fridge (${items_word}), list only 10 healthy recipes in json format seperated by comma.`;
+
+            var prompt;
+
+            if (!userData.preference || userData.preference.length == 0) {
+                prompt = `Based on what the available items in the fridge (${items_word}), list a few healthy recipes in json format under key "recipes" and make sure each recipe has a "name" option.`;
+            } else {
+                prompt = `Based on what sort of food I want to eat (${preference_word}) and available items in the fridge (${items_word}), list a few healthy recipes in json format under key "recipes" and make sure each recipe has a "name" option.`;
+            }
 
             const completion = await openai.chat.completions.create({
                 messages: [
