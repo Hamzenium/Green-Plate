@@ -1,3 +1,4 @@
+const OpenAI = require('openai');
 const express = require('express');
 const multer = require('multer');
 const sharp = require('sharp'); // For image processing
@@ -5,6 +6,7 @@ const app = express();
 const port = 3100;
 const admin = require("firebase-admin");
 const credentials = require('./key.json');
+
 admin.initializeApp({
     credential: admin.credential.cert(credentials)
 });
@@ -151,23 +153,23 @@ app.delete('/deleteItem', async (req, res) => {
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-api_key='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'
+api_key = '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'
 
 app.post('/upload', upload.single('image'), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No image uploaded.' });
-    }
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'No image uploaded.' });
+        }
 
-    // Process the image using sharp
-    const processedImageBuffer = await sharp(req.file.buffer)
+        // Process the image using sharp
+        const processedImageBuffer = await sharp(req.file.buffer)
 
-    // Return the base64-encoded processed image
-    const processedImageBase64 = processedImageBuffer.toString('base64');
-    res.json({ processedImageBase64 });
+        // Return the base64-encoded processed image
+        const processedImageBase64 = processedImageBuffer.toString('base64');
+        res.json({ processedImageBase64 });
     } catch (error) {
-    console.error('Error processing image:', error);
-    res.status(500).json({ error: 'Image processing failed.' });
+        console.error('Error processing image:', error);
+        res.status(500).json({ error: 'Image processing failed.' });
     }
 
     // Classify the image
@@ -176,19 +178,19 @@ app.post('/upload', upload.single('image'), async (req, res) => {
     const response = await openai.chat.completions.create({
         model: "gpt-4-vision-preview",
         messages: [
-        {
-            role: "user",
-            content: [
-            { type: "text", text: "Not in a sentence, just name the food item in the image" },
             {
-                type: "image_url",
-                image_url: {
-                    //"url": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAA…"
-                    "url": "data:image/jpeg;base64,"+processedImageBase64
-                }
+                role: "user",
+                content: [
+                    { type: "text", text: "Not in a sentence, just name the food item in the image" },
+                    {
+                        type: "image_url",
+                        image_url: {
+                            //"url": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAA…"
+                            "url": "data:image/jpeg;base64," + processedImageBase64
+                        }
+                    },
+                ],
             },
-            ],
-        },
         ],
     });
     console.log(response.choices[0]);
