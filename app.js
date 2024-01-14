@@ -178,8 +178,7 @@ app.post('/upload', async (req, res) => {
             ],
         });
 
-        console.log(response.choices[0]);
-        res.status(200);
+        res.status(200).json({ item: response.choices[0] });
     } catch (error) {
         console.error(error); // Log the error for debugging purposes
         res.status(500).json({ error: 'Internal Server Error' }); // Send a generic error response
