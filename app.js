@@ -123,7 +123,7 @@ app.post('/dashboard', async (req, res) => {
     }
 });
 
-app.delete('/deleteItem', async (req, res) => {
+app.post('/deleteItem', async (req, res) => {
     const userId = req.body.email;
     const itemIndex = req.body.itemIndex;
 
