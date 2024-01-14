@@ -193,7 +193,7 @@ app.post('/create/recipe', async (req, res) => {
                     preference_word += ", " + userData.preference[i];
                 }
             }
-            const prompt = `Based on your what sort of food I want to eat (${preference_word}) and available items in the fridge (${items_word}), list only 10 healthy recipes in json format seperated by comma.`;
+            const prompt = `Based on your what sort of food I would like to eat (${preference_word}) and using strictly the available items in the fridge (${items_word}), list only 5 to 10 healthy recipes in json format seperated by comma.`;
 
             const completion = await openai.chat.completions.create({
                 messages: [
@@ -220,7 +220,7 @@ app.post('/create/recipe/steps', async (req, res) => {
 
     try {
       
-            const prompt = `Using the ingredient ${itemName}, provide short step-by-step instructions for a delicious and healthy recipe.`;
+            const prompt = `Using strictly the items mentioned only: ${itemName}, provide short step-by-step instructions for a delicious and healthy recipe.`;
 
             const completion = await openai.chat.completions.create({
                 messages: [
