@@ -182,16 +182,14 @@ app.post('/create/recipe', async (req, res) => {
             let items_word = "";
             let preference_word = "";
 
+
+
             for (let i = 0; i < userData.items.length; i++) {
-                if (i > 0 && i <= userData.items.length - 1) {
-                    items_word += ", " + userData.items[i];
-                }
+                items_word += ", " + userData.items[i];
             }
 
             for (let i = 0; i < userData.preference.length; i++) {
-                if (i > 0 && i <= userData.preference.length - 1) {
-                    preference_word += ", " + userData.preference[i];
-                }
+                preference_word += ", " + userData.preference[i];
             }
 
             var prompt;
