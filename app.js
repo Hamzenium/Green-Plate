@@ -1,9 +1,6 @@
 const OpenAI = require('openai');
 const express = require('express');
-const multer = require('multer');
-const sharp = require('sharp'); // For image processing
 const app = express();
-const port = 3100;
 const admin = require("firebase-admin");
 const credentials = require('./key.json');
 
@@ -149,52 +146,57 @@ app.delete('/deleteItem', async (req, res) => {
     }
 });
 
-// Set up Multer for file upload
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
 
-api_key = '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'
+const openai = new OpenAI({
+        apiKey: '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',
+      });
 
-app.post('/upload', upload.single('image'), async (req, res) => {
+
+app.get('/create/recipe', async (req, res) => {
+    const userId = req.body.email;
+
     try {
-        if (!req.file) {
-            return res.status(400).json({ error: 'No image uploaded.' });
-        }
+        const userRef = db.collection('users');
+        const userDoc = await userRef.doc(userId).get();
 
-        // Process the image using sharp
-        const processedImageBuffer = await sharp(req.file.buffer)
+        if (userDoc.exists) {
+            const userData = userDoc.data();
 
-        // Return the base64-encoded processed image
-        const processedImageBase64 = processedImageBuffer.toString('base64');
-        res.json({ processedImageBase64 });
-    } catch (error) {
-        console.error('Error processing image:', error);
-        res.status(500).json({ error: 'Image processing failed.' });
-    }
+            let items_word = "";
+            let preference_word = "";
 
-    // Classify the image
-    const openai = new OpenAI(api_key);
+            for (let i = 0; i < userData.items.length; i++) {
+                if (i > 0 && i <= userData.items.length - 1) {
+                    items_word += ", " + userData.items[i];
+                }
+            }
 
-    const response = await openai.chat.completions.create({
-        model: "gpt-4-vision-preview",
-        messages: [
-            {
-                role: "user",
-                content: [
-                    { type: "text", text: "Not in a sentence, just name the food item in the image" },
+            for (let i = 0; i < userData.preference.length; i++) {
+                if (i > 0 && i <= userData.preference.length - 1) {
+                    preference_word += ", " + userData.preference[i];
+                }
+            }
+            const prompt = `Based on your what sort of food I want to eat (${preference_word}) and available items in the fridge (${items_word}), list only 10 recipes in json format seperated by comma.`;
+
+            const completion = await openai.chat.completions.create({
+                messages: [
                     {
-                        type: "image_url",
-                        image_url: {
-                            //"url": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAA…"
-                            "url": "data:image/jpeg;base64," + processedImageBase64
-                        }
+                      role: "system",
+                      content: "You are a helpful assistant designed to output JSON.",
                     },
-                ],
-            },
-        ],
-    });
-    console.log(response.choices[0]);
-
+                    { role: "user", content: prompt },
+                  ],
+                  model: "gpt-3.5-turbo-1106",
+                  response_format: { type: "json_object" },
+                });
+            res.json(completion.choices[0].message.content);
+        } else {
+            res.status(404).send("User not found");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal request failed' });
+    }
 });
 
 
