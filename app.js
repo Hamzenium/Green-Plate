@@ -253,7 +253,7 @@ app.post('/upload', async (req, res) => {
                 {
                     role: "user",
                     content: [
-                        { type: "text", text: "Not in a sentence, just name the food item in the image" },
+                        { type: "text", text: `Not in a sentence, just name the food item in the image and how many days it might last in the fridge seperated by a comma.` },
                         {
                             type: "image_url",
                             image_url: {
