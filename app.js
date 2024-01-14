@@ -151,39 +151,39 @@ app.delete('/deleteItem', async (req, res) => {
     }
 });
 
-const api_key = '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'
-const openai = new OpenAI();
+// const api_key = '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'
+// const openai = new OpenAI();
 
-app.post('/upload', async (req, res) => {
-    try {
-        const fileBuffer = Buffer.from(JSON.parse(JSON.stringify(req.files)).undefined.data.data).toString('base64')
+// app.post('/upload', async (req, res) => {
+//     try {
+//         const fileBuffer = Buffer.from(JSON.parse(JSON.stringify(req.files)).undefined.data.data).toString('base64')
 
-        const response = await openai.chat.completions.create({
-            model: "gpt-4-vision-preview",
-            messages: [
-                {
-                    role: "user",
-                    content: [
-                        { type: "text", text: "Not in a sentence, just name the food item in the image" },
-                        {
-                            type: "image_url",
-                            image_url: {
-                                //"url": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAA…"
-                                "url": "data:image/jpeg;base64," + fileBuffer
-                            }
-                        },
-                    ],
-                },
-            ],
-        });
+//         const response = await openai.chat.completions.create({
+//             model: "gpt-4-vision-preview",
+//             messages: [
+//                 {
+//                     role: "user",
+//                     content: [
+//                         { type: "text", text: "Not in a sentence, just name the food item in the image" },
+//                         {
+//                             type: "image_url",
+//                             image_url: {
+//                                 //"url": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAA…"
+//                                 "url": "data:image/jpeg;base64," + fileBuffer
+//                             }
+//                         },
+//                     ],
+//                 },
+//             ],
+//         });
 
-        console.log(response.choices[0]);
-        res.status(200);
-    } catch (error) {
-        console.error(error); // Log the error for debugging purposes
-        res.status(500).json({ error: 'Internal Server Error' }); // Send a generic error response
-    }
-});
+//         console.log(response.choices[0]);
+//         res.status(200);
+//     } catch (error) {
+//         console.error(error); // Log the error for debugging purposes
+//         res.status(500).json({ error: 'Internal Server Error' }); // Send a generic error response
+//     }
+// });
 
 app.listen(process.env.PORT || 3100, () => {
     console.log('http://localhost:3100/')
