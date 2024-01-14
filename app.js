@@ -151,7 +151,7 @@ app.delete('/deleteItem', async (req, res) => {
 });
 
 const api_key = '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'
-const openai = new OpenAI(api_key);
+const openai = new OpenAI();
 
 app.post('/upload', async (req, res) => {
     try {
