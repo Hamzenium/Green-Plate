@@ -1,5 +1,6 @@
-const OpenAI = require('openai');
-const express = require('express');
+const OpenAI = require("openai");
+const fileUpload = require('express-fileupload');
+var cors = require('cors')
 const app = express();
 const admin = require("firebase-admin");
 const credentials = require('./key.json');
@@ -7,7 +8,10 @@ const credentials = require('./key.json');
 admin.initializeApp({
     credential: admin.credential.cert(credentials)
 });
+
 app.use(express.json());
+app.use(fileUpload());
+app.use(cors());
 
 const db = admin.firestore();
 
@@ -199,6 +203,37 @@ app.get('/create/recipe', async (req, res) => {
     }
 });
 
+
+app.post('/upload', async (req, res) => {
+    try {
+        const fileBuffer = Buffer.from(JSON.parse(JSON.stringify(req.files)).undefined.data.data).toString('base64')
+
+        const response = await openai.chat.completions.create({
+            model: "gpt-4-vision-preview",
+            messages: [
+                {
+                    role: "user",
+                    content: [
+                        { type: "text", text: "Not in a sentence, just name the food item in the image" },
+                        {
+                            type: "image_url",
+                            image_url: {
+                                //"url": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAA…"
+                                "url": "data:image/jpeg;base64," + fileBuffer
+                            }
+                        },
+                    ],
+                },
+            ],
+        });
+
+        res.status(200).json({ item: response.choices[0] });
+    } catch (error) {
+        console.error(error); // Log the error for debugging purposes
+        res.status(500).json({ error: 'Internal Server Error' }); // Send a generic error response
+
+    }
+});
 
 app.listen(process.env.PORT || 3100, () => {
     console.log('http://localhost:3100/')
