@@ -198,14 +198,14 @@ app.post('/create/recipe', async (req, res) => {
             const completion = await openai.chat.completions.create({
                 messages: [
                     {
-                      role: "system",
-                      content: "You are a helpful assistant designed to output JSON.",
+                        role: "system",
+                        content: "You are a helpful assistant designed to output JSON.",
                     },
                     { role: "user", content: prompt },
-                  ],
-                  model: "gpt-3.5-turbo-1106",
-                  response_format: { type: "json_object" },
-                });
+                ],
+                model: "gpt-3.5-turbo-1106",
+                response_format: { type: "json_object" },
+            });
             res.json(completion.choices[0].message.content);
         } else {
             res.status(404).send("User not found");
@@ -219,21 +219,19 @@ app.post('/create/recipe/steps', async (req, res) => {
     const itemName = req.body.itemName;
 
     try {
-      
-            const prompt = `Using the ingredient ${itemName}, provide short step-by-step instructions for a delicious and healthy recipe.`;
+        const prompt = `Using the ingredients ${itemName}, provide short step-by-step instructions (dont start with sure...) for a healthy recipe. Only provide text instructions, not JSON. `;
 
-            const completion = await openai.chat.completions.create({
-                messages: [
-                    {
-                      role: "system",
-                      content: "You are a helpful assistant designed to output JSON.",
-                    },
-                    { role: "user", content: prompt },
-                  ],
-                  model: "gpt-3.5-turbo-1106",
-                  response_format: { type: "json_object" },
-                });
-            res.json(completion.choices[0].message.content);
+        const completion = await openai.chat.completions.create({
+            messages: [
+                {
+                    role: "system",
+                    content: "You are a helpful assistant.",
+                },
+                { role: "user", content: prompt },
+            ],
+            model: "gpt-3.5-turbo-1106"
+        });
+        res.json(completion.choices[0].message.content);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal request failed' });
