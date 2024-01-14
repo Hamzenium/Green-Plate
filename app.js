@@ -1,6 +1,5 @@
 const OpenAI = require('openai');
 const express = require('express');
-const multer = require('multer');
 const fileUpload = require('express-fileupload');
 var cors = require('cors')
 const app = express();
@@ -150,10 +149,6 @@ app.delete('/deleteItem', async (req, res) => {
         res.status(500).send(error);
     }
 });
-
-// Set up Multer for file upload
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
 
 api_key = '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'
 const openai = new OpenAI(api_key);
