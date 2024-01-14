@@ -220,15 +220,8 @@ app.post('/create/recipe/steps', async (req, res) => {
 
     try {
       
-            const prompt = `Generate a short step-by-step guide for a delicious and healthy recipe using the ingredient listed only ${itemName}. Make sure to output the recipe in the following data structure:
-            "recipes": [
-                {
-                  "name": "${RecipeName}",
-                  "ingredients": ["${itemName}"],
-                  "healthy": true
-                }
-              ]`;
-
+            const prompt = "Generate a short step-by-step guide for a delicious and healthy recipe using the ingredient listed only ${itemName}. Make sure to output the recipe in the following data structure:"
+            
             const completion = await openai.chat.completions.create({
                 messages: [
                     {
