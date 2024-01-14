@@ -1,4 +1,5 @@
 const OpenAI = require("openai");
+
 const fileUpload = require('express-fileupload');
 const express = require('express');
 var cors = require('cors')
@@ -160,10 +161,12 @@ app.delete('/deleteItem', async (req, res) => {
     }
 });
 
-
+require('dotenv').config();
 const openai = new OpenAI({
-    apiKey: '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',
+    apiKey: process.env.OPENAI_API_KEY,
 });
+
+
 
 
 app.post('/create/recipe', async (req, res) => {
