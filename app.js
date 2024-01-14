@@ -213,30 +213,11 @@ app.post('/create/recipe', async (req, res) => {
     }
 });
 app.post('/create/recipe/steps', async (req, res) => {
-    const userId = req.body.email;
+    const itemName = req.body.itemName;
 
     try {
-        const userRef = db.collection('users');
-        const userDoc = await userRef.doc(userId).get();
-
-        if (userDoc.exists) {
-            const userData = userDoc.data();
-
-            let items_word = "";
-            let preference_word = "";
-
-            for (let i = 0; i < userData.items.length; i++) {
-                if (i > 0 && i <= userData.items.length - 1) {
-                    items_word += ", " + userData.items[i];
-                }
-            }
-
-            for (let i = 0; i < userData.preference.length; i++) {
-                if (i > 0 && i <= userData.preference.length - 1) {
-                    preference_word += ", " + userData.preference[i];
-                }
-            }
-            const prompt = `Based on your what sort of food I want to eat (${preference_word}) and available items in the fridge (${items_word}), list only 10 recipes in json format seperated by comma.`;
+      
+            const prompt = `Using the ingredient ${itemName}, provide short step-by-step instructions for a delicious and healthy recipe.`;
 
             const completion = await openai.chat.completions.create({
                 messages: [
@@ -250,9 +231,6 @@ app.post('/create/recipe/steps', async (req, res) => {
                   response_format: { type: "json_object" },
                 });
             res.json(completion.choices[0].message.content);
-        } else {
-            res.status(404).send("User not found");
-        }
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal request failed' });
