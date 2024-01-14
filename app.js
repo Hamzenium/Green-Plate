@@ -62,7 +62,7 @@ app.put("/add/preferences", async (req, res) => {
 
         const existingPreferences = userData.data().preference || [];
 
-        const updatedPreferences = req.body.pr;
+        const updatedPreferences = req.body.preference;
 
         await userRef.update({
             preference: updatedPreferences
