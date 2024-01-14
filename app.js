@@ -1,16 +1,18 @@
 const OpenAI = require('openai');
 const express = require('express');
 const multer = require('multer');
-const sharp = require('sharp'); // For image processing
+const fileUpload = require('express-fileupload');
+var cors = require('cors')
 const app = express();
-const port = 3100;
 const admin = require("firebase-admin");
 const credentials = require('./key.json');
 
 admin.initializeApp({
     credential: admin.credential.cert(credentials)
 });
-app.use(express.json());
+
+app.use(fileUpload());
+app.use(cors());
 
 const db = admin.firestore();
 
@@ -154,49 +156,38 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 api_key = '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'
+const openai = new OpenAI(api_key);
 
-app.post('/upload', upload.single('image'), async (req, res) => {
+app.post('/upload', async (req, res) => {
     try {
-        if (!req.file) {
-            return res.status(400).json({ error: 'No image uploaded.' });
-        }
+        const fileBuffer = Buffer.from(JSON.parse(JSON.stringify(req.files)).undefined.data.data).toString('base64')
 
-        // Process the image using sharp
-        const processedImageBuffer = await sharp(req.file.buffer)
+        const response = await openai.chat.completions.create({
+            model: "gpt-4-vision-preview",
+            messages: [
+                {
+                    role: "user",
+                    content: [
+                        { type: "text", text: "Not in a sentence, just name the food item in the image" },
+                        {
+                            type: "image_url",
+                            image_url: {
+                                //"url": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAA…"
+                                "url": "data:image/jpeg;base64," + fileBuffer
+                            }
+                        },
+                    ],
+                },
+            ],
+        });
 
-        // Return the base64-encoded processed image
-        const processedImageBase64 = processedImageBuffer.toString('base64');
-        res.json({ processedImageBase64 });
+        console.log(response.choices[0]);
+        res.status(200);
     } catch (error) {
-        console.error('Error processing image:', error);
-        res.status(500).json({ error: 'Image processing failed.' });
+        console.error(error); // Log the error for debugging purposes
+        res.status(500).json({ error: 'Internal Server Error' }); // Send a generic error response
     }
-
-    // Classify the image
-    const openai = new OpenAI(api_key);
-
-    const response = await openai.chat.completions.create({
-        model: "gpt-4-vision-preview",
-        messages: [
-            {
-                role: "user",
-                content: [
-                    { type: "text", text: "Not in a sentence, just name the food item in the image" },
-                    {
-                        type: "image_url",
-                        image_url: {
-                            //"url": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAA…"
-                            "url": "data:image/jpeg;base64," + processedImageBase64
-                        }
-                    },
-                ],
-            },
-        ],
-    });
-    console.log(response.choices[0]);
-
 });
-
 
 app.listen(process.env.PORT || 3100, () => {
     console.log('http://localhost:3100/')
