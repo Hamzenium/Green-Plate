@@ -5,7 +5,6 @@ var cors = require('cors')
 const app = express();
 const admin = require("firebase-admin");
 const credentials = require('./key.json');
-
 admin.initializeApp({
     credential: admin.credential.cert(credentials)
 });
@@ -19,21 +18,31 @@ const db = admin.firestore();
 app.post("/create/user", async (req, res) => {
     try {
         const email = req.body.email;
-        const userData = {
-            name: req.body.name,
-            email: req.body.email,
-            preference: [],
-            items: []
-        };
 
-        await db.collection('users').doc(email).set(userData);
-        const response = { message: "User created successfully." };
-        res.status(200).json(response);
+        const userRef = db.collection('users').doc(email);
+        const userData = await userRef.get();
+
+        if (userData.exists) {
+            const data = userData.data();
+            return res.json(data);
+        } else {
+            const userData = {
+                name: req.body.name,
+                email: email,
+                preference: [],
+                items: []
+            };
+
+            await db.collection('users').doc(email).set(userData);
+            const response = { message: "User created successfully." };
+            return res.status(200).json(response);
+        }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
 });
+
 
 app.put("/add/preferences", async (req, res) => {
     try {
@@ -203,7 +212,52 @@ app.get('/create/recipe', async (req, res) => {
         res.status(500).json({ error: 'Internal request failed' });
     }
 });
+app.get('/create/recipe/steps', async (req, res) => {
+    const userId = req.body.email;
 
+    try {
+        const userRef = db.collection('users');
+        const userDoc = await userRef.doc(userId).get();
+
+        if (userDoc.exists) {
+            const userData = userDoc.data();
+
+            let items_word = "";
+            let preference_word = "";
+
+            for (let i = 0; i < userData.items.length; i++) {
+                if (i > 0 && i <= userData.items.length - 1) {
+                    items_word += ", " + userData.items[i];
+                }
+            }
+
+            for (let i = 0; i < userData.preference.length; i++) {
+                if (i > 0 && i <= userData.preference.length - 1) {
+                    preference_word += ", " + userData.preference[i];
+                }
+            }
+            const prompt = `Based on your what sort of food I want to eat (${preference_word}) and available items in the fridge (${items_word}), list only 10 recipes in json format seperated by comma.`;
+
+            const completion = await openai.chat.completions.create({
+                messages: [
+                    {
+                      role: "system",
+                      content: "You are a helpful assistant designed to output JSON.",
+                    },
+                    { role: "user", content: prompt },
+                  ],
+                  model: "gpt-3.5-turbo-1106",
+                  response_format: { type: "json_object" },
+                });
+            res.json(completion.choices[0].message.content);
+        } else {
+            res.status(404).send("User not found");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal request failed' });
+    }
+});
 
 app.post('/upload', async (req, res) => {
     try {
