@@ -1,5 +1,6 @@
 const OpenAI = require("openai");
 const fileUpload = require('express-fileupload');
+const express = require('express');
 var cors = require('cors')
 const app = express();
 const admin = require("firebase-admin");
@@ -152,8 +153,8 @@ app.delete('/deleteItem', async (req, res) => {
 
 
 const openai = new OpenAI({
-        apiKey: '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',
-      });
+    apiKey: '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',
+});
 
 
 app.get('/create/recipe', async (req, res) => {
