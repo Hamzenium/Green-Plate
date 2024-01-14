@@ -62,7 +62,7 @@ app.put("/add/preferences", async (req, res) => {
 
         const existingPreferences = userData.data().preference || [];
 
-        const updatedPreferences = req.body.pr;
+        const updatedPreferences = req.body.preference;
 
         await userRef.update({
             preference: updatedPreferences
@@ -193,7 +193,7 @@ app.post('/create/recipe', async (req, res) => {
                     preference_word += ", " + userData.preference[i];
                 }
             }
-            const prompt = `Based on your what sort of food I want to eat (${preference_word}) and available items in the fridge (${items_word}), list only 10 recipes in json format seperated by comma.`;
+            const prompt = `Based on your what sort of food I want to eat (${preference_word}) and available items in the fridge (${items_word}), list only 10 healthy recipes in json format seperated by comma.`;
 
             const completion = await openai.chat.completions.create({
                 messages: [
