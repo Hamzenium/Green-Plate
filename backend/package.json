@@ -1,33 +1,30 @@
 {
-  "name": "green-plate",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "code repository for deltahacks x project",
-  "main": "app.js",
+  "description": "",
+  "main": "dist/server.js",
   "scripts": {
-    "start": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "ts-node server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
   },
-  "engines": {
-    "node": "20.x"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/tsuyuuu/green-plate.git"
-  },
+  "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/tsuyuuu/green-plate/issues"
-  },
-  "homepage": "https://github.com/tsuyuuu/green-plate#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "express-fileupload": "^1.4.3",
-    "firebase-admin": "^12.0.0",
-    "json": "^11.0.0",
-    "nodemon": "^3.0.2",
-    "openai": "^4.24.7"
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "express-fileupload": "^1.5.2",
+    "firebase-admin": "^13.6.0",
+    "openai": "^6.9.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.5",
+    "@types/express-fileupload": "^1.5.1",
+    "@types/node": "^24.10.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }

@@ -1,0 +1,14 @@
+# Environment variables
+.env
+
+# Firebase credentials
+key.json
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Any OS junk
+.DS_Store
