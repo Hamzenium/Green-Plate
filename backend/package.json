@@ -1,0 +1,33 @@
+{
+  "name": "green-plate",
+  "version": "1.0.0",
+  "description": "code repository for deltahacks x project",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "20.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tsuyuuu/green-plate.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tsuyuuu/green-plate/issues"
+  },
+  "homepage": "https://github.com/tsuyuuu/green-plate#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.3",
+    "firebase-admin": "^12.0.0",
+    "json": "^11.0.0",
+    "nodemon": "^3.0.2",
+    "openai": "^4.24.7"
+  }
+}

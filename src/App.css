@@ -1,0 +1,298 @@
+/* App.css */
+body {
+	font-family: 'Arial', sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+nav {
+	display: flex;
+	justify-content: space-between;
+	flex: 1;
+	padding: 10px;
+}
+
+nav .inner {
+	max-width: 1000px;
+	width: 100%;
+	display: block;
+	margin: auto;
+}
+
+nav .inner h3 {
+	color: #20b45d;
+	font-weight: bold;
+	font-size: x-large;
+	font-family: 'Playfair Display', serif;
+}
+
+nav ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+nav li {
+	display: inline-block;
+	margin-right: 20px;
+	font-size: 18px;
+	cursor: pointer;
+}
+
+nav a {
+	text-decoration: none;
+}
+
+.landing {
+	text-align: center;
+	margin-top: 50px;
+}
+
+h1 {
+	color: #000000;
+	font-size: 36px;
+	font-weight: bold;
+	line-height: 44px;
+}
+
+h1 strong {
+	background-color: #63ea9b;
+	border-radius: 6px;
+	padding: 2px 6px;
+}
+
+.landing .inner {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	max-width: 800px;
+	margin: auto;
+}
+
+@media only screen and (max-width: 600px) {
+	nav {
+		padding: 10px 30px;
+	}
+	
+	.landing .inner {
+		flex-direction: column;
+	}
+
+	.landing .vector img {
+		display: none;
+	}
+}
+
+.landing .inner div {
+	padding: 20px;
+	text-align: left;
+}
+
+.landing button {
+	font-size: 18px;
+	font-weight: bold;
+	border: 0;
+	border-radius: 6px;
+	padding: 8px 20px;
+	margin-top: 15px;
+	background-color: none;
+	position: relative;
+	display: inline-block;
+	background-image: linear-gradient(#20b45d, #20b45d);
+	-webkit-box-shadow: 0px 5px 0px 0px #168d47;
+	-moz-box-shadow: 0px 5px 0px 0px #168d47;
+	box-shadow: 0px 5px 0px 0px #168d47;
+	color: white;
+	cursor: pointer;
+	width: 100%;
+	max-width: 200px;
+}
+
+.landing .google-btn {
+	max-width: 300px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: normal;
+	margin-top: 40px;
+	background-image: linear-gradient(#1a1717, #1f1d1d);
+	-webkit-box-shadow: 0px 5px 0px 0px #000000;
+	-moz-box-shadow: 0px 5px 0px 0px #000000;
+	box-shadow: 0px 5px 0px 0px #000000;
+}
+
+.Dashboard {
+	display: flex;
+	flex: 1;
+	flex-direction: row;
+	justify-content: center;
+	width: 100%;
+	max-width: 100vw;
+}
+
+.Dashboard .inner {
+	display: flex;
+	flex: 1;
+	flex-direction: row;
+	justify-content: center;
+	width: 100%;
+	max-width: 1000px;
+}
+
+.Dashboard .col {
+	padding: 30px;
+	width: 100%;
+	height: 100vh;
+}
+
+@media only screen and (max-width: 600px) {
+	.Dashboard .inner {
+		flex-direction: column;
+	}
+
+	.Dashboard .col {
+		height: auto;
+	}
+}
+
+.Dashboard .box {
+	border: 2px solid rgb(190, 190, 190);
+	padding: 30px;
+	margin-top: 10px;
+	border-radius: 8px;
+}
+
+.recipe {
+	background-color: #f3f3f3;
+	margin-top: 10px;
+	padding: 20px;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.recipe:hover {
+	text-decoration: underline;
+}
+
+.box .wrapper {
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
+	margin: auto;
+}
+
+.add {
+	background-color: #f3f3f3;
+	padding: 20px;
+	border-radius: 6px;
+	text-align: center;
+	font-weight: bold;
+	width: 100%;
+}
+
+.box .wrapper input[type=file] {
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	cursor: pointer;
+	padding: 20px;
+}
+
+.box ul li {
+	list-style-type: none;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 10px;
+	padding: 10px;
+	border-bottom: 1px solid #f3f3f3;
+	margin-left: -40px;
+}
+
+.box ul li img {
+	width: 20px;
+	cursor: pointer;
+	opacity: 0.6;
+}
+
+.box ul li img:hover {
+	opacity: 1;
+}
+
+.box ul li div {
+	display: flex;
+	align-items: center;
+}
+
+.box ul li div span {
+	font-size: 12px;
+	margin-right: 10px;
+}
+
+.Dashboard .btn {
+	font-size: 18px;
+	font-weight: bold;
+	border: 0;
+	border-radius: 6px;
+	padding: 8px 20px;
+	margin-bottom: 15px;
+	background-color: none;
+	position: relative;
+	display: inline-block;
+	background-image: linear-gradient(#20b45d, #20b45d);
+	-webkit-box-shadow: 0px 5px 0px 0px #168d47;
+	-moz-box-shadow: 0px 5px 0px 0px #168d47;
+	box-shadow: 0px 5px 0px 0px #168d47;
+	color: white;
+	cursor: pointer;
+	width: 100%;
+}
+
+.Dashboard .pref {
+	background-image: linear-gradient(#1a1717, #1f1d1d);
+	-webkit-box-shadow: 0px 5px 0px 0px #000000;
+	-moz-box-shadow: 0px 5px 0px 0px #000000;
+	box-shadow: 0px 5px 0px 0px #000000;
+}
+
+.preferences {
+	width: 100%;
+	position: fixed;
+	height: 100vh;
+	top: 0;
+	left: 0;
+}
+
+.preferences .backdrop {
+	background-color: rgba(0, 0, 0, 0.4);
+	width: 100%;
+	height: 200vh;
+	top: 0;
+	left: 0;
+}
+
+.preferences .modal {
+	background-color: white;
+	padding: 50px;
+	z-index: 1000;
+}
+
+.modal {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 300px;
+}
+
+.preferences .btn {
+	background-image: linear-gradient(#1a1717, #1f1d1d);
+	-webkit-box-shadow: 0px 5px 0px 0px #000000;
+	-moz-box-shadow: 0px 5px 0px 0px #000000;
+	box-shadow: 0px 5px 0px 0px #000000;
+}
